@@ -30,3 +30,22 @@
     }
 
 ```
+## Write a content to a file
+
+```php
+        $filesystem = $this->_objectManager->get('Magento\Framework\Filesystem');
+				$writer = $filesystem->getDirectoryWrite(\Magento\Framework\App\Filesystem\DirectoryList::PUB);			
+        /** @var \Magento\Framework\Filesystem\File\WriteInterface|\Magento\Framework\Filesystem\File\Write $file */
+        $file = $writer->openFile('file.txt', 'w+');
+
+        try {
+            $file->lock();
+            try {
+                $file->write($content);
+            } finally {
+                $file->unlock();
+            }
+        } finally {
+            $file->close();
+        }
+```
